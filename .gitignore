@@ -1,0 +1,6 @@
+node_modules/
+.~lock.*
+extracted_slides/
+vid_frame_*.png
+ref_frame_*.png
+reference.png

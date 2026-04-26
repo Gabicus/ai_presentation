@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide Editor — AI & Art</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #ddd; font-family: 'Inter', system-ui, sans-serif; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: #1a1a2e; border-bottom: 1px solid #333;
+    padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+  }
+  header h1 { font-size: 18px; font-weight: 600; flex: 1; }
+  header button {
+    background: #2a2a4e; border: 1px solid #444; color: #ddd;
+    padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  }
+  header button:hover { background: #3a3a5e; }
+  header button.primary { background: #2563eb; border-color: #3b82f6; }
+  header button.primary:hover { background: #1d4ed8; }
+  header button.danger { background: #7f1d1d; border-color: #991b1b; }
+
+  .status { font-size: 12px; color: #666; padding: 0 24px; margin: 8px 0; }
+  .status.saved { color: #4ade80; }
+
+  main { padding: 16px 24px; max-width: 1200px; margin: 0 auto; }
+
+  .section {
+    background: #1a1a2e; border: 1px solid #333; border-radius: 10px;
+    margin-bottom: 20px; overflow: hidden;
+  }
+  .section-header {
+    background: #222244; padding: 10px 16px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: grab; border-bottom: 1px solid #333;
+  }
+  .section-header:active { cursor: grabbing; }
+  .section-num {
+    background: #2563eb; color: #fff; width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .section-title-input {
+    background: transparent; border: none; color: #fff; font-size: 16px;
+    font-weight: 600; flex: 1; outline: none; font-family: inherit;
+  }
+  .section-title-input:focus { border-bottom: 1px solid #3b82f6; }
+  .section-actions { display: flex; gap: 6px; }
+  .section-actions button {
+    background: transparent; border: 1px solid #444; color: #888;
+    width: 28px; height: 28px; border-radius: 4px; cursor: pointer;
+    font-size: 14px; display: flex; align-items: center; justify-content: center;
+  }
+  .section-actions button:hover { color: #fff; border-color: #666; }
+
+  .slides-container { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+
+  .slide-card {
+    background: #0f0f1a; border: 1px solid #2a2a3e; border-radius: 8px;
+    padding: 14px; position: relative;
+  }
+  .slide-card.dragging { opacity: 0.4; }
+  .slide-card .slide-label {
+    font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .slide-card .slide-label button {
+    background: transparent; border: none; color: #555; cursor: pointer; font-size: 12px;
+  }
+  .slide-card .slide-label button:hover { color: #f87171; }
+
+  .field { margin-bottom: 10px; }
+  .field label {
+    display: block; font-size: 11px; color: #666; margin-bottom: 3px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .field input, .field textarea, .field select {
+    width: 100%; background: #181828; border: 1px solid #2a2a3e;
+    color: #ddd; border-radius: 6px; padding: 8px 10px;
+    font-family: inherit; font-size: 14px; outline: none;
+  }
+  .field input:focus, .field textarea:focus { border-color: #3b82f6; }
+  .field textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+  .field select { cursor: pointer; }
+
+  .field-row { display: flex; gap: 10px; }
+  .field-row .field { flex: 1; }
+
+  .add-slide-btn {
+    width: 100%; background: transparent; border: 1px dashed #333;
+    color: #555; padding: 10px; border-radius: 6px; cursor: pointer;
+    font-size: 13px;
+  }
+  .add-slide-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+
+  .add-section-btn {
+    width: 100%; background: transparent; border: 2px dashed #333;
+    color: #555; padding: 20px; border-radius: 10px; cursor: pointer;
+    font-size: 15px; margin-bottom: 20px;
+  }
+  .add-section-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+
+  .preview-pane {
+    position: fixed; right: 0; top: 0; width: 0; height: 100vh;
+    background: #0a0a0f; border-left: 1px solid #333; z-index: 200;
+    transition: width 0.3s; overflow: hidden;
+  }
+  .preview-pane.open { width: 50vw; }
+  .preview-pane iframe { width: 100%; height: 100%; border: none; }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; background: #2563eb;
+    color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 14px;
+    opacity: 0; transition: opacity 0.3s; z-index: 300;
+  }
+  .toast.show { opacity: 1; }
+
+  .drag-over { border-color: #3b82f6 !important; background: #1a1a3e !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Slide Editor</h1>
+  <button onclick="loadFromFile()">Import JSON</button>
+  <button onclick="loadFromPresentation()">Import from index.html</button>
+  <button onclick="exportJSON()" class="primary">Save JSON</button>
+  <button onclick="downloadJSON()">Download JSON</button>
+  <button id="previewBtn" onclick="togglePreview()">Preview</button>
+</header>
+<div class="status" id="status">No changes</div>
+
+<main id="main"></main>
+
+<div class="preview-pane" id="previewPane">
+  <iframe id="previewFrame"></iframe>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<input type="file" id="fileInput" accept=".json" style="display:none">
+
+<script>
+let data = { sections: [] };
+let dirty = false;
+
+const TRANSITIONS = ['slide','fade','convex','zoom','none'];
+const LAYOUTS = ['default','center-text','side-by-side','image-full','quote','stats','cards','prompt-demo','custom-html'];
+
+function init() {
+  loadSaved();
+  render();
+}
+
+function loadSaved() {
+  const saved = localStorage.getItem('slide-editor-data');
+  if (saved) {
+    try { data = JSON.parse(saved); } catch(e) {}
+  }
+  if (!data.sections || data.sections.length === 0) {
+    importFromCurrentPresentation();
+  }
+}
+
+function importFromCurrentPresentation() {
+  data = {
+    sections: [
+      {
+        title: "AI & Art — Title",
+        slides: [
+          { layout: "center-text", heading: "AI & Art", subheading: "The Next Evolution", body: "Gabe DeWitt · Fairmont State University · 2026", notes: "Welcome everyone. Quick intro." },
+          { layout: "side-by-side", heading: "Who Am I?", body: "Artist: Photographer · Watercolorist · Visual storyteller\nEngineer: 15+ years in energy, data, systems\nMountaineer · Denali summiteer · Cenote diver", notes: "" },
+          { layout: "image-full", heading: "My Creative Portfolio", image: "img/showcase-live.png", body: "Built in ~3 hours with Claude Code · dejaviewed.dev/about", notes: "" },
+          { layout: "image-full", heading: "The Art Gallery", image: "img/artist-gallery.png", body: "Photography · Watercolors · Video · Digital art", notes: "" }
+        ]
+      },
+      {
+        title: "What Is AI",
+        slides: [
+          { layout: "image-full", heading: '"AI" as a User Interface', image: "img/slide1_ai_as_ui.png", notes: "" },
+          { layout: "default", heading: "What's Actually Happening", body: "Linear Algebra — data in massive grids of numbers\nCalculus — gradient descent tweaks billions of weights\nProbability — predicts most statistically likely next token\n\nPattern recognition at a scale orders of magnitude beyond anything before.", notes: "This is the key insight. It's math, not magic." },
+          { layout: "quote", heading: "", body: "AI is the performance on the stage. Machine Learning is the physics that makes the equipment move.", subheading: "It's not thinking. It's calculating.", notes: "" },
+          { layout: "default", heading: "The Secret", body: "Talk to it like a robot.\nIt listens really well.", notes: "Give specific instructions. Be precise." }
+        ]
+      },
+      {
+        title: "The Landscape",
+        slides: [
+          { layout: "image-full", heading: "The Landscape — April 2026", image: "img/slide3_llm_scores.png", body: "Source: Artificial Analysis · Composite benchmark scores", notes: "" },
+          { layout: "image-full", heading: "The Trajectory", image: "img/slide5_ai_growth.png", body: "That Y-axis is logarithmic. This line is exponential growth.", notes: "Let this sink in." },
+          { layout: "cards", heading: "AI Modalities", body: "Chatbots: ChatGPT, Claude, Gemini\nCopilot IDEs: Cursor, VS Code, Windsurf\nCLI Agents: Claude Code, Codex, Gemini CLI\nImage Gen: Midjourney, DALL-E, Stable Diffusion\nVideo Gen: Sora, Runway, Kling\n3D Gen: World Labs, Tripo, Meshy", notes: "" }
+        ]
+      },
+      {
+        title: "The Pattern",
+        slides: [
+          { layout: "center-text", heading: "We've Seen This Before", body: "Every transformative tool faced the same resistance.", notes: "" },
+          { layout: "quote", heading: "The Calculator — 1970s", body: "Calculators will destroy children's ability to do math!", subheading: "They were kind of right. But the engineers who embraced them built rockets.", notes: "" },
+          { layout: "quote", heading: "AutoCAD — 1980s", body: "This will ruin the craft of drafting!", subheading: "Every drafter who refused to learn it was replaced by one who did.", notes: "" },
+          { layout: "quote", heading: "AI — 2020s", body: "AI will replace artists!", subheading: "No. Artists who use AI will replace artists who don't.", notes: "This is the key slide." }
+        ]
+      },
+      {
+        title: "My Coding Ceiling",
+        slides: [
+          { layout: "default", heading: "My Coding Ceiling", body: "I'm great at reading code.\nI'm terrible at writing it.\n\nFor over a decade, I had ideas I couldn't build. I could see the architecture. I just couldn't type the syntax.", notes: "" },
+          { layout: "cards", heading: "The Old Days — 2015–2018", body: "D3 Sunburst: Weeks of struggle\nSankey Diagrams: Months of iteration\nReveal.js Presenter: Days of HTML wrangling\nStoryMap.js: Painful JSON editing", notes: "All still live on 1gabe.com" }
+        ]
+      },
+      {
+        title: "Then AI Happened",
+        slides: [
+          { layout: "stats", heading: "Then AI Happened", body: "1 Month · 1 Tool · 8+ Projects\n\nSame person. Same ideas. Same inability to write code.\nBetter brush.", notes: "" },
+          { layout: "side-by-side", heading: "Then vs Now", body: "2015–2018: 4 projects, 3 years, Basic D3 + HTML\n2026: 8+ projects, 1 month, Next.js · Three.js · D3 · Python · Cloudflare", notes: "" }
+        ]
+      },
+      {
+        title: "DejaViewed",
+        slides: [
+          { layout: "stats", heading: "DejaViewed", body: "A living content intelligence platform\n334 Entries · 103 Deep Dives · 43.5K Crosslinks", notes: "" },
+          { layout: "image-full", heading: "The Catalog", image: "img/dejaviewed-live.png", notes: "" },
+          { layout: "image-full", heading: "Deep Dives & Creators", image: "img/dejaviewed-creators-deepdives.png", notes: "" },
+          { layout: "image-full", heading: "The Board View", image: "img/dejaviewed-board.png", notes: "" },
+          { layout: "default", heading: "91 Curated Art Pieces", body: "Hand-picked from Instagram · Artists I admire\nLEDs in motor oil · Generative code art · Interactive installations\n\nAI didn't pick this art. I did.\nAI built the system that organizes and connects it.", notes: "" }
+        ]
+      },
+      {
+        title: "Code as Canvas",
+        slides: [
+          { layout: "center-text", heading: "Code as Canvas", subheading: "When Algorithms Become the Artist", body: "DEEPER DIVE", notes: "" },
+          { layout: "center-text", heading: "Body → Machine → Art", subheading: "Real-Time Interactive Installations Anyone Can Build", body: "We're going to build one of these. Live. In a few minutes.", notes: "" }
+        ]
+      },
+      {
+        title: "Graph Cosmos",
+        slides: [
+          { layout: "image-full", heading: "Graph Cosmos", image: "img/graph-cosmos-live.png", body: "3D orbital node visualization · 334 entries orbiting in 3D space", notes: "" },
+          { layout: "image-full", heading: "Force-Directed Graph", image: "img/graph-force-live.png", body: "D3.js · 43,500 crosslinks rendered as a network", notes: "" },
+          { layout: "image-full", heading: "Cosmos View", image: "img/dejaviewed-cosmos.png", body: "Every dot is a piece of content · Orbits = collections", notes: "" }
+        ]
+      },
+      {
+        title: "Portfolio",
+        slides: [
+          { layout: "default", heading: "Career Intelligence System", body: "Portfolio · Resume Builder · Showcase\nNext.js · Three.js · 6 resume variants · 3 portfolio editions", notes: "" },
+          { layout: "default", heading: "Three.js Cosmos Hero", body: "Nebula volumes · Particle clouds · Orbital paths\nThe homepage hero animation — built in a conversation\n12 React Three Fiber components · ~3 hours", notes: "" }
+        ]
+      },
+      {
+        title: "The Real Question",
+        slides: [
+          { layout: "center-text", heading: "The Real Question", body: "", notes: "Pause here." },
+          { layout: "default", heading: "", body: "The people most offended by AI are the ones who refuse to adapt to its increased potential.\n\nThey've gotten comfortable with a system that's okay with mediocrity.", notes: "" },
+          { layout: "default", heading: "", body: "To be your best artist is to remove every hurdle, every paywall, every knowledge gate that stymies inspiration and creativity.", notes: "" },
+          { layout: "center-text", heading: "Threatened or Inspired?", body: "", notes: "Let it hang." }
+        ]
+      },
+      {
+        title: "Live Build",
+        slides: [
+          { layout: "center-text", heading: "Let's Build Something", body: "Right now.\nOne prompt.\nInteractive hand-tracking energy visualizer.", notes: "" },
+          { layout: "prompt-demo", heading: "The Prompt", body: "Single HTML file. Webcam hand-tracking visualizer using MediaPipe Hands. Dual canvas — bg for camera feed, fx for effects with trail persistence. Detect 21 hand landmarks, draw neon skeleton + glowing fingertip nodes. When 2 hands visible: thick neon beams between matching fingertips with 3-layer glow. 4 modes: Antigravity, Geometric Mesh, Lightning, Minimal. Pinch detection with expanding ring burst + sparkle rays. Controls: beam width, glow, trail, camera opacity, toggles, color themes, lite mode. Dark UI.", notes: "" },
+          { layout: "prompt-demo", heading: "The Short Version", body: "Build a webcam hand-tracking art visualizer. MediaPipe Hands, dual canvas, neon rainbow beams between fingertips, 4 modes (antigravity, geometric mesh, blue lightning, minimal), pinch effects, color themes, performance toggles. Single HTML file, dark UI.", subheading: "Same output. 42 words. The AI fills in the engineering. You provide the vision.", notes: "" },
+          { layout: "center-text", heading: "Live Demo", body: "Launch Energy Conductor\nBuilt by AI · ~550 lines · No human code written\nKeys: 1-4 modes · H hide controls · F fullscreen", link: "webcam-energy.html", notes: "LAUNCH THE DEMO" }
+        ]
+      },
+      {
+        title: "Your Move",
+        slides: [
+          { layout: "center-text", heading: "Your Move", body: "AI is not coming for your art.\nIt's coming for your excuses.\n\nGabe DeWitt · dejaviewed.dev · 1gabe.com", notes: "End strong." }
+        ]
+      }
+    ]
+  };
+}
+
+function markDirty() {
+  dirty = true;
+  document.getElementById('status').textContent = 'Unsaved changes';
+  document.getElementById('status').className = 'status';
+}
+
+function render() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  data.sections.forEach((section, si) => {
+    const el = document.createElement('div');
+    el.className = 'section';
+    el.dataset.si = si;
+    el.draggable = true;
+    el.addEventListener('dragstart', e => { e.dataTransfer.setData('section', si); el.classList.add('dragging'); });
+    el.addEventListener('dragend', () => el.classList.remove('dragging'));
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', e => {
+      e.preventDefault(); el.classList.remove('drag-over');
+      const from = parseInt(e.dataTransfer.getData('section'));
+      if (!isNaN(from) && from !== si) { moveSection(from, si); }
+    });
+
+    el.innerHTML = `
+      <div class="section-header">
+        <div class="section-num">${si + 1}</div>
+        <input class="section-title-input" value="${esc(section.title)}" oninput="updateSectionTitle(${si}, this.value)">
+        <div class="section-actions">
+          <button onclick="moveSection(${si}, ${si - 1})" title="Move up" ${si === 0 ? 'disabled' : ''}>↑</button>
+          <button onclick="moveSection(${si}, ${si + 1})" title="Move down" ${si === data.sections.length - 1 ? 'disabled' : ''}>↓</button>
+          <button onclick="deleteSection(${si})" title="Delete section" style="color:#f87171;">✕</button>
+        </div>
+      </div>
+      <div class="slides-container" id="slides-${si}"></div>
+    `;
+    main.appendChild(el);
+
+    const container = el.querySelector('.slides-container');
+    section.slides.forEach((slide, sli) => {
+      container.appendChild(renderSlide(si, sli, slide));
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-slide-btn';
+    addBtn.textContent = '+ Add Slide';
+    addBtn.onclick = () => addSlide(si);
+    container.appendChild(addBtn);
+  });
+
+  const addSec = document.createElement('button');
+  addSec.className = 'add-section-btn';
+  addSec.textContent = '+ Add Section (Horizontal Topic)';
+  addSec.onclick = addSection;
+  main.appendChild(addSec);
+}
+
+function renderSlide(si, sli, slide) {
+  const card = document.createElement('div');
+  card.className = 'slide-card';
+  card.innerHTML = `
+    <div class="slide-label">
+      <span>Slide ${sli + 1}${sli === 0 ? ' (section entry)' : ' (vertical drill-down)'}</span>
+      <span>
+        <button onclick="duplicateSlide(${si},${sli})" title="Duplicate">⧉</button>
+        <button onclick="moveSlide(${si},${sli},-1)" title="Move up">↑</button>
+        <button onclick="moveSlide(${si},${sli},1)" title="Move down">↓</button>
+        <button onclick="deleteSlide(${si},${sli})" title="Delete">✕</button>
+      </span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Layout</label>
+        <select onchange="updateSlide(${si},${sli},'layout',this.value)">
+          ${LAYOUTS.map(l => `<option value="${l}" ${slide.layout === l ? 'selected' : ''}>${l}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label>Transition</label>
+        <select onchange="updateSlide(${si},${sli},'transition',this.value)">
+          <option value="">default</option>
+          ${TRANSITIONS.map(t => `<option value="${t}" ${slide.transition === t ? 'selected' : ''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Heading</label>
+      <input value="${esc(slide.heading || '')}" oninput="updateSlide(${si},${sli},'heading',this.value)">
+    </div>
+    <div class="field">
+      <label>Subheading</label>
+      <input value="${esc(slide.subheading || '')}" oninput="updateSlide(${si},${sli},'subheading',this.value)">
+    </div>
+    <div class="field">
+      <label>Body (line breaks = bullet points or paragraphs)</label>
+      <textarea rows="4" oninput="updateSlide(${si},${sli},'body',this.value)">${esc(slide.body || '')}</textarea>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Image path</label>
+        <input value="${esc(slide.image || '')}" oninput="updateSlide(${si},${sli},'image',this.value)" placeholder="img/example.png">
+      </div>
+      <div class="field">
+        <label>Link</label>
+        <input value="${esc(slide.link || '')}" oninput="updateSlide(${si},${sli},'link',this.value)" placeholder="https://...">
+      </div>
+    </div>
+    <div class="field">
+      <label>Speaker Notes</label>
+      <textarea rows="2" oninput="updateSlide(${si},${sli},'notes',this.value)" style="font-size:12px;color:#888;">${esc(slide.notes || '')}</textarea>
+    </div>
+  `;
+  return card;
+}
+
+function updateSectionTitle(si, val) { data.sections[si].title = val; markDirty(); }
+function updateSlide(si, sli, key, val) { data.sections[si].slides[sli][key] = val; markDirty(); }
+
+function addSection() {
+  data.sections.push({ title: 'New Section', slides: [{ layout: 'center-text', heading: 'New Slide', body: '', notes: '' }] });
+  markDirty(); render();
+}
+
+function deleteSection(si) {
+  if (data.sections.length <= 1) return;
+  if (!confirm(`Delete section "${data.sections[si].title}"?`)) return;
+  data.sections.splice(si, 1);
+  markDirty(); render();
+}
+
+function moveSection(from, to) {
+  if (to < 0 || to >= data.sections.length) return;
+  const [item] = data.sections.splice(from, 1);
+  data.sections.splice(to, 0, item);
+  markDirty(); render();
+}
+
+function addSlide(si) {
+  data.sections[si].slides.push({ layout: 'default', heading: '', body: '', notes: '' });
+  markDirty(); render();
+}
+
+function deleteSlide(si, sli) {
+  if (data.sections[si].slides.length <= 1) return;
+  data.sections[si].slides.splice(sli, 1);
+  markDirty(); render();
+}
+
+function duplicateSlide(si, sli) {
+  const copy = JSON.parse(JSON.stringify(data.sections[si].slides[sli]));
+  data.sections[si].slides.splice(sli + 1, 0, copy);
+  markDirty(); render();
+}
+
+function moveSlide(si, sli, dir) {
+  const to = sli + dir;
+  if (to < 0 || to >= data.sections[si].slides.length) return;
+  const slides = data.sections[si].slides;
+  [slides[sli], slides[to]] = [slides[to], slides[sli]];
+  markDirty(); render();
+}
+
+function exportJSON() {
+  localStorage.setItem('slide-editor-data', JSON.stringify(data, null, 2));
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'slides.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  dirty = false;
+  document.getElementById('status').textContent = 'Saved & downloaded slides.json';
+  document.getElementById('status').className = 'status saved';
+  toast('Saved slides.json');
+}
+
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'slides.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Downloaded slides.json');
+}
+
+function loadFromFile() {
+  document.getElementById('fileInput').click();
+}
+
+document.getElementById('fileInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      data = JSON.parse(ev.target.result);
+      localStorage.setItem('slide-editor-data', JSON.stringify(data, null, 2));
+      render();
+      toast('Imported ' + file.name);
+    } catch(err) {
+      alert('Invalid JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+function loadFromPresentation() {
+  if (!confirm('Reset editor to match current index.html structure?')) return;
+  importFromCurrentPresentation();
+  localStorage.setItem('slide-editor-data', JSON.stringify(data, null, 2));
+  render();
+  toast('Imported from index.html');
+}
+
+function togglePreview() {
+  const pane = document.getElementById('previewPane');
+  pane.classList.toggle('open');
+  if (pane.classList.contains('open')) {
+    document.getElementById('previewFrame').src = 'index.html';
+  }
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+window.addEventListener('beforeunload', e => {
+  if (dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    exportJSON();
+  }
+});
+
+init();
+</script>
+</body>
+</html>

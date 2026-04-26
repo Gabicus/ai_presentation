@@ -1,0 +1,89 @@
+Slide Transitions (6 styles)
+
+  - slide — left/right push (default)
+  - fade — cross-fade
+  - convex — 3D bulge outward
+  - concave — 3D cave inward
+  - zoom — scale from center
+  - none — instant cut
+  - Each can mix in/out separately (slide-in fade-out)
+  - 3 speeds: fast, default, slow
+
+  Fragment Animations (20+ effects)
+
+  Things that appear/disappear within a slide as you click:
+  - fade-up / down / left / right — directional slide+fade
+  - fade-in-then-out — appear, then vanish next click
+  - fade-in-then-semi-out — appear, then dim to 50%
+  - grow / shrink — scale up/down
+  - strike — strikethrough text
+  - highlight-red / green / blue — permanent color pop
+  - highlight-current-red/green/blue — color that reverts next click
+  - Custom CSS fragments — blur, rotate, anything you define
+
+  Backgrounds (5 types)
+
+  - Color / Gradient — any CSS color or gradient per slide
+  - Image — full-bleed photo with opacity/position control
+  - Video — autoplay behind slide content, loop/mute
+  - Iframe — live webpage AS the background (clickable too)
+  - Parallax — scrolling parallax across entire deck
+
+  Auto-Animate (the showstopper)
+
+  Adjacent slides morph elements between positions automatically:
+  - Elements slide, resize, recolor smoothly
+  - Code blocks morph — show code evolving step by step
+  - Lists morph — items add/remove/reorder with animation
+  - Control easing, duration, delay
+
+  Layout Helpers
+
+  - r-stack — layer elements on top of each other (image reveals with fragments)
+  - r-fit-text — auto-sizes text to fill slide (huge impact text)
+  - r-stretch — element fills remaining space
+
+  Themes (12 built-in)
+
+  black, white, league, beige, night, serif, simple, solarized, moon, dracula, sky, blood
+
+  Code Presentation
+
+  - 200+ language syntax highlighting
+  - Step-through line highlighting — walk through code line by line
+  - Auto-animate between code blocks — code evolution
+
+  Media
+
+  - Lightbox — click images/videos to fullscreen overlay
+  - Lazy loading — only loads nearby slides
+  - Iframe messaging — embedded apps know when their slide is active
+
+  Scroll View (new in 5.0)
+
+  - Entire deck becomes scrollable page (good for sharing after)
+  - Auto-activates on mobile
+
+  Navigation
+
+  - Horizontal → topics, Vertical ↓ drill-downs
+  - Grid mode — preserves vertical position across stacks
+  - Overview mode (ESC) — bird's-eye grid of all slides
+  - Jump to slide (G key)
+  - Touch/swipe on mobile
+
+  Presentation Modes
+
+  - Speaker view (S key) — notes, next slide preview, timer
+  - Fullscreen (F key)
+  - PDF export — ?print-pdf in URL
+  - Auto-slide — timed auto-advance
+  - Multiplex — sync your slides to audience devices in real-time
+
+  Best Combos for Art Presentation
+
+  - r-stack + fragments — layer images that reveal one by one (gallery showcase)
+  - Auto-animate + code — show prompt evolving into result
+  - Iframe background + interactive — live demo AS the slide
+  - Video background + fade fragments — cinematic feel
+  - r-fit-text — big bold statements ("THREATENED OR INSPIRED?")

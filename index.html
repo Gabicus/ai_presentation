@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI &amp; Art: The Next Evolution</title>
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/night.css" id="theme">
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/plugin/highlight/monokai.css">
+  <style>
+    :root {
+      --r-background-color: #0a0a0f;
+      --r-main-color: #e0e0e0;
+      --r-heading-color: #ffffff;
+      --r-link-color: #64b5f6;
+      --r-link-color-hover: #90caf9;
+      --r-selection-background-color: #64b5f644;
+      --r-heading-font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --r-main-font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+    .reveal { font-weight: 300; }
+    .reveal h1, .reveal h2 { font-weight: 800; letter-spacing: -0.02em; }
+    .reveal h3 { font-weight: 600; color: #64b5f6; }
+
+    .accent { color: #64b5f6; }
+    .warn { color: #ff6b6b; }
+    .glow { color: #ffd93d; }
+    .dim { color: #666; font-size: 0.7em; }
+    .mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+
+    .big-number {
+      font-size: 4em;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #64b5f6, #ce93d8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: center;
+      gap: 3em;
+      margin: 1em 0;
+    }
+    .stat-box {
+      text-align: center;
+    }
+    .stat-box .num {
+      font-size: 2.5em;
+      font-weight: 900;
+      color: #64b5f6;
+    }
+    .stat-box .label {
+      font-size: 0.6em;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 1.5em 0;
+    }
+    .timeline .era {
+      text-align: center;
+      padding: 0.5em 1.5em;
+      position: relative;
+    }
+    .timeline .era::after {
+      content: '→';
+      position: absolute;
+      right: -0.5em;
+      color: #64b5f6;
+      font-size: 1.5em;
+    }
+    .timeline .era:last-child::after { content: ''; }
+    .timeline .year { font-size: 0.6em; color: #666; }
+    .timeline .tool { font-weight: 600; color: #64b5f6; }
+
+    .side-by-side {
+      display: flex;
+      gap: 2em;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .side-by-side > div { flex: 1; max-width: 45%; }
+
+    .quote {
+      font-style: italic;
+      font-size: 1.3em;
+      color: #ce93d8;
+      border-left: 4px solid #ce93d8;
+      padding-left: 0.8em;
+      margin: 1em auto;
+      max-width: 80%;
+      text-align: left;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1em;
+      margin: 1em 0;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1em;
+      text-align: center;
+    }
+    .card h4 { margin: 0.3em 0; color: #64b5f6; font-size: 0.8em; }
+    .card p { margin: 0; font-size: 0.55em; color: #aaa; }
+
+    .reveal section img {
+      border: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      border-radius: 8px;
+      max-height: 55vh;
+    }
+    .reveal section img.no-shadow {
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .reveal section img.full {
+      max-height: 70vh;
+      max-width: 90%;
+    }
+
+    .prompt-demo {
+      background: #1a1a2e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.2em;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55em;
+      line-height: 1.6;
+      max-width: 85%;
+      margin: 1em auto;
+    }
+    .prompt-demo .user { color: #64b5f6; }
+    .prompt-demo .ai { color: #81c784; }
+
+    .reveal .slide-number { font-size: 14px; color: #444; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(100, 181, 246, 0.15);
+      border: 1px solid rgba(100, 181, 246, 0.3);
+      color: #64b5f6;
+      padding: 0.2em 0.6em;
+      border-radius: 20px;
+      font-size: 0.5em;
+      margin: 0.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 1: WHO AM I (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%)">
+          <h1 style="font-size: 2.5em;">AI <span class="accent">&amp;</span> Art</h1>
+          <h3 style="color: #ce93d8; font-weight: 300; font-size: 0.9em;">The Next Evolution</h3>
+          <p style="margin-top: 2em; font-size: 0.7em; color: #888;">Gabe DeWitt &nbsp;·&nbsp; Fairmont State University &nbsp;·&nbsp; 2026</p>
+          <p style="font-size: 0.5em; color: #555; margin-top: 1em;">← → navigate topics &nbsp;&nbsp; ↑ ↓ dive deeper &nbsp;&nbsp; ESC overview</p>
+        </section>
+
+        <section data-transition="fade" data-background-image="img/hero-denali.jpeg" data-background-opacity="0.25">
+          <h2>Who Am I?</h2>
+          <div class="side-by-side">
+            <div>
+              <h3>Artist</h3>
+              <p>Photographer · Watercolorist · Visual storyteller</p>
+              <p class="dim">SmugMug galleries · Instagram · Fine art prints</p>
+            </div>
+            <div>
+              <h3>Engineer</h3>
+              <p>15+ years in energy, data, systems</p>
+              <p class="dim">KeyLogic · Tableau · Python · Data visualization</p>
+            </div>
+          </div>
+          <p style="margin-top: 1.5em; font-size: 0.8em;">
+            <span class="glow">Mountaineer</span> · Denali summiteer · Cenote diver · Rock climber
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>My Creative Portfolio</h2>
+          <img src="img/showcase-live.png" class="full" alt="Artist portfolio section">
+          <p class="dim">Built in ~3 hours with Claude Code · dejaviewed.dev/about</p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Art Gallery</h2>
+          <img src="img/artist-gallery.png" class="full" alt="Artist gallery cards">
+          <p class="dim">Photography · Watercolors · Video · Digital art</p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 2: WHAT IS AI (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="convex">
+          <h2>"AI" <span class="accent">as a User Interface</span></h2>
+          <img src="img/slide1_ai_as_ui.png" class="full" alt="AI as User Interface diagram">
+        </section>
+
+        <section data-transition="fade">
+          <h2>What's Actually Happening</h2>
+          <div style="text-align: left; max-width: 80%; margin: 0 auto;">
+            <p class="fragment fade-up">
+              <span class="accent">Linear Algebra</span> — data organized into massive grids of numbers
+            </p>
+            <p class="fragment fade-up">
+              <span class="accent">Calculus</span> — gradient descent tweaks billions of weights to reduce error
+            </p>
+            <p class="fragment fade-up">
+              <span class="accent">Probability</span> — predicts the most statistically likely next word or pixel
+            </p>
+            <p class="fragment fade-up" style="margin-top: 1.5em;">
+              <span class="glow" style="font-size: 1.2em;">Pattern recognition at a scale orders of magnitude beyond anything before.</span>
+            </p>
+          </div>
+        </section>
+
+        <section data-transition="fade">
+          <p class="quote">"AI is the performance on the stage.<br>Machine Learning is the physics that makes the equipment move."</p>
+          <h3 class="fragment fade-up" style="margin-top: 1.5em; font-size: 1.3em;">It's not thinking.<br>It's <span class="glow">calculating</span>.</h3>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Secret</h2>
+          <p style="font-size: 1.5em; margin: 1em 0;" class="fragment fade-up">Talk to it <span class="warn">like a robot</span>.</p>
+          <p style="font-size: 1.8em; font-weight: 800;" class="fragment fade-up">It listens <span class="accent">really</span> well.</p>
+          <div class="prompt-demo fragment fade-up">
+            <p><span class="user">Human:</span> Build a script that makes API calls to OpenAlex, filters by keyword and date range, stores journal article metadata as rows in a spreadsheet.</p>
+            <p><span class="ai">Claude:</span> I'll create that. Let me structure the API calls, handle pagination, and output to CSV...</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 3: THE LANDSCAPE (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom">
+          <h2>The Landscape <span class="dim">April 2026</span></h2>
+          <img src="img/slide3_llm_scores.png" class="full no-shadow" alt="LLM benchmark scores" style="background: white; padding: 0.5em; border-radius: 8px;">
+          <p class="dim">Source: Artificial Analysis · Composite benchmark scores</p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Trajectory</h2>
+          <img src="img/slide5_ai_growth.png" class="full no-shadow" alt="METR AI growth chart" style="background: white; padding: 0.5em; border-radius: 8px;">
+          <p class="fragment fade-up" style="font-size: 1.1em; margin-top: 0.5em;">
+            That Y-axis is <span class="warn">logarithmic</span>. This line is <span class="glow">exponential growth</span>.
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>AI Modalities</h2>
+          <div class="card-grid">
+            <div class="card">
+              <h4>💬 Chatbots</h4>
+              <p>ChatGPT, Claude, Gemini</p>
+              <p>Text, code, images, reasoning</p>
+            </div>
+            <div class="card">
+              <h4>🖥️ Copilot IDEs</h4>
+              <p>Cursor, VS Code, Windsurf</p>
+              <p>Edit, run, debug in your editor</p>
+            </div>
+            <div class="card">
+              <h4>⌨️ CLI Agents</h4>
+              <p>Claude Code, Codex, Gemini CLI</p>
+              <p>AI does anything a human can from terminal</p>
+            </div>
+            <div class="card">
+              <h4>🎨 Image Gen</h4>
+              <p>Midjourney, DALL-E, Stable Diffusion</p>
+              <p>Text → images, style transfer</p>
+            </div>
+            <div class="card">
+              <h4>🎬 Video Gen</h4>
+              <p>Sora, Runway, Kling</p>
+              <p>Text → video, motion, VFX</p>
+            </div>
+            <div class="card">
+              <h4>🧊 3D Gen</h4>
+              <p>World Labs, Tripo, Meshy</p>
+              <p>Text/image → 3D models</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 4: THE PATTERN (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="convex">
+          <h2>We've Seen This Before</h2>
+          <p style="font-size: 0.8em; color: #888;">Every transformative tool faced the same resistance.</p>
+        </section>
+
+        <section data-transition="fade" data-auto-animate>
+          <h2 data-id="title">The Calculator <span class="dim">1970s</span></h2>
+          <p data-id="quote" class="quote">"Calculators will destroy children's ability to do math!"</p>
+          <p class="fragment fade-up" style="font-size: 1.1em;">They were <span class="glow">kind of right</span>. 😄</p>
+          <p class="fragment fade-up" style="font-size: 0.9em; color: #888;">But the engineers who embraced them built rockets.</p>
+        </section>
+
+        <section data-transition="fade" data-auto-animate>
+          <h2 data-id="title">AutoCAD <span class="dim">1980s</span></h2>
+          <p data-id="quote" class="quote">"This will ruin the craft of drafting!"</p>
+          <p class="fragment fade-up">Every drafter who refused to learn it<br><span class="warn">was replaced by one who did</span>.</p>
+          <p class="fragment fade-up" style="font-size: 0.9em; color: #888;">The craft didn't die. It evolved.</p>
+        </section>
+
+        <section data-transition="fade" data-auto-animate>
+          <h2 data-id="title">AI <span class="dim">2020s</span></h2>
+          <p data-id="quote" class="quote">"AI will replace artists!"</p>
+          <p class="fragment fade-up" style="font-size: 1.3em;">No.</p>
+          <p class="fragment fade-up" style="font-size: 1.1em;">
+            Artists who <span class="accent">use AI</span> will replace artists who <span class="warn">don't</span>.
+          </p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 5: MY CEILING (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom">
+          <h2>My Coding Ceiling</h2>
+          <p style="font-size: 1.3em; margin: 1em 0;">
+            I'm <span class="accent">great</span> at reading code.
+          </p>
+          <p style="font-size: 1.3em;">
+            I'm <span class="warn">terrible</span> at writing it.
+          </p>
+          <p class="fragment fade-up" style="margin-top: 1.5em; font-size: 0.9em; color: #888;">
+            For over a decade, I had ideas I couldn't build.<br>
+            I could see the architecture. I just couldn't type the syntax.
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Old Days <span class="dim">2015–2018</span></h2>
+          <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="card">
+              <h4>D3 Sunburst</h4>
+              <p>Radial hierarchy diagram</p>
+              <p style="color: #ff6b6b;">Weeks of struggle</p>
+              <a href="https://1gabe.com/demo/sunburst/" target="_blank" class="badge">live →</a>
+            </div>
+            <div class="card">
+              <h4>Sankey Diagrams</h4>
+              <p>Energy flow visualizations</p>
+              <p style="color: #ff6b6b;">Months of iteration</p>
+              <a href="https://1gabe.com/demo/sankey/" target="_blank" class="badge">live →</a>
+            </div>
+            <div class="card">
+              <h4>Reveal.js Presenter</h4>
+              <p>This very format, v1</p>
+              <p style="color: #ff6b6b;">Days of HTML wrangling</p>
+              <a href="https://1gabe.com/demo/presenter/" target="_blank" class="badge">live →</a>
+            </div>
+            <div class="card">
+              <h4>StoryMap.js</h4>
+              <p>Narrative map project</p>
+              <p style="color: #ff6b6b;">Painful JSON editing</p>
+              <a href="https://1gabe.com/demo/storymapjs/" target="_blank" class="badge">live →</a>
+            </div>
+          </div>
+          <p class="dim" style="margin-top: 0.5em;">Click any badge to see the live project · All still running on 1gabe.com</p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 6: THEN AI HAPPENED (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a0f 70%)">
+          <h2 style="font-size: 2.5em;">Then <span class="accent">AI</span> Happened</h2>
+          <div class="stat-row fragment fade-up">
+            <div class="stat-box">
+              <div class="num">1</div>
+              <div class="label">Month</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">1</div>
+              <div class="label">Tool</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">8+</div>
+              <div class="label">Projects</div>
+            </div>
+          </div>
+          <p class="fragment fade-up" style="color: #888; font-size: 0.8em;">
+            Same person. Same ideas. Same inability to write code.<br>
+            <span class="glow">Better brush.</span>
+          </p>
+        </section>
+
+        <section data-transition="fade" data-auto-animate>
+          <h2>Then vs Now</h2>
+          <div class="side-by-side">
+            <div style="text-align: center;">
+              <h3 style="color: #ff6b6b;">2015–2018</h3>
+              <p>4 projects</p>
+              <p>3 years</p>
+              <p>Basic D3 + HTML</p>
+              <p style="color: #666;">Couldn't get past the code</p>
+            </div>
+            <div style="text-align: center;">
+              <h3 style="color: #81c784;">2026</h3>
+              <p>8+ projects</p>
+              <p>1 month</p>
+              <p>Next.js · Three.js · D3 · Python · Cloudflare</p>
+              <p style="color: #81c784;">The code wasn't the bottleneck anymore</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 7: DEJAVIEWED (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="convex" data-background-image="img/dejaviewed-hero.png" data-background-opacity="0.15">
+          <h2>DejaViewed</h2>
+          <p style="font-size: 1.1em;">A living content intelligence platform</p>
+          <div class="stat-row fragment fade-up">
+            <div class="stat-box">
+              <div class="num">334</div>
+              <div class="label">Entries</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">103</div>
+              <div class="label">Deep Dives</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">43.5K</div>
+              <div class="label">Crosslinks</div>
+            </div>
+          </div>
+          <p class="fragment fade-up">
+            <a href="https://dejaviewed.dev" target="_blank" class="badge">dejaviewed.dev →</a>
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Catalog</h2>
+          <img src="img/dejaviewed-live.png" class="full" alt="DejaViewed card catalog">
+        </section>
+
+        <section data-transition="fade">
+          <h2>Deep Dives &amp; Creators</h2>
+          <img src="img/dejaviewed-creators-deepdives.png" class="full" alt="Deep dives and creators">
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Board View</h2>
+          <img src="img/dejaviewed-board.png" class="full" alt="Kanban board view">
+        </section>
+
+        <section data-transition="fade">
+          <h2>91 Curated Art Pieces</h2>
+          <p>Hand-picked from Instagram · Artists I admire</p>
+          <p class="fragment fade-up" style="font-size: 0.9em; color: #888;">
+            LEDs in motor oil · Generative code art · Interactive installations<br>
+            Every one cataloged, crosslinked, and discoverable.
+          </p>
+          <p class="fragment fade-up">
+            <span class="glow">AI didn't pick this art. I did.</span><br>
+            <span class="dim">AI built the system that organizes and connects it.</span>
+          </p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 8: CODE AS CANVAS (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom">
+          <h3 style="color: #ce93d8; font-size: 0.8em;">DEEPER DIVE</h3>
+          <h2 style="font-size: 2em;">Code as Canvas</h2>
+          <p style="font-size: 1.1em;">When Algorithms Become the Artist</p>
+          <p class="fragment fade-up" style="margin-top: 1.5em;">
+            <a href="https://dejaviewed.dev/deeper/deeper-insight-generative-art-code.html" target="_blank" class="badge">open deep dive →</a>
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h3 style="color: #ce93d8; font-size: 0.8em;">DEEPER DIVE</h3>
+          <h2>Body → Machine → Art</h2>
+          <p>Real-Time Interactive Installations<br>Anyone Can Build</p>
+          <p class="fragment fade-up" style="margin-top: 1em;">
+            <a href="https://dejaviewed.dev/deeper/deeper-insight-interactive-installations.html" target="_blank" class="badge">open deep dive →</a>
+          </p>
+          <p class="fragment fade-up dim">We're going to build one of these. Live. In a few minutes.</p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 9: GRAPH COSMOS (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="convex" data-background-image="img/graph-cosmos.png" data-background-opacity="0.2">
+          <h2>Graph Cosmos</h2>
+          <p>3D orbital node visualization</p>
+          <p style="font-size: 0.8em; color: #888;">334 entries orbiting in 3D space · Canvas rendering</p>
+          <img src="img/graph-cosmos-live.png" class="full" alt="Graph Cosmos visualization">
+        </section>
+
+        <section data-transition="fade">
+          <h2>Force-Directed Graph</h2>
+          <img src="img/graph-force-live.png" class="full" alt="D3 force directed graph">
+          <p class="dim">D3.js · 43,500 crosslinks rendered as a network</p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>Cosmos View</h2>
+          <img src="img/dejaviewed-cosmos.png" class="full" alt="Cosmos orbital view">
+          <p class="dim">Every dot is a piece of content · Orbits = collections</p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 10: PORTFOLIO (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom">
+          <h2>Career Intelligence System</h2>
+          <p>Portfolio · Resume Builder · Showcase</p>
+          <p class="dim">Next.js · Three.js · 6 resume variants · 3 portfolio editions</p>
+          <p style="margin-top: 1em;">
+            <a href="https://dejaviewed.dev/about" target="_blank" class="badge">live showcase →</a>
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>Three.js Cosmos Hero</h2>
+          <p>Nebula volumes · Particle clouds · Orbital paths</p>
+          <p class="dim">The homepage hero animation — built in a conversation</p>
+          <div class="fragment fade-up" style="margin-top: 1em;">
+            <span class="badge">NebulaVolumes.tsx</span>
+            <span class="badge">ParticleCloud.tsx</span>
+            <span class="badge">OrbitPath.tsx</span>
+            <span class="badge">GalleryRing.tsx</span>
+            <span class="badge">StarField.tsx</span>
+            <span class="badge">SaturnRing.tsx</span>
+          </div>
+          <p class="fragment fade-up dim">12 React Three Fiber components · ~3 hours of conversation</p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 11: THE REAL QUESTION (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #2a1a1a 0%, #0a0a0f 70%)">
+          <h2 class="r-fit-text" style="max-width: 80%;">The Real Question</h2>
+        </section>
+
+        <section data-transition="fade">
+          <p style="font-size: 0.9em; color: #888;">The people most offended by AI</p>
+          <p class="fragment fade-up" style="font-size: 1.3em;">
+            are the ones who refuse to adapt to its <span class="accent">increased potential</span>.
+          </p>
+          <p class="fragment fade-up" style="font-size: 1.1em; margin-top: 1em;">
+            They've gotten comfortable with a system<br>
+            that's <span class="warn">okay with mediocrity</span>.
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <p style="font-size: 1em;">To be your <span class="glow">best artist</span></p>
+          <p class="fragment fade-up" style="font-size: 1em;">is to remove every hurdle,</p>
+          <p class="fragment fade-up" style="font-size: 1em;">every paywall,</p>
+          <p class="fragment fade-up" style="font-size: 1em;">every knowledge gate</p>
+          <p class="fragment fade-up" style="font-size: 1.3em; margin-top: 0.5em;">
+            that stymies <span class="accent">inspiration</span> and <span class="accent">creativity</span>.
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2 style="font-size: 2.5em;">
+            <span class="fragment fade-up warn">Threatened</span>
+            <span class="fragment fade-up" style="color: #888;"> or </span>
+            <span class="fragment fade-up accent">Inspired</span>
+            <span class="fragment fade-up">?</span>
+          </h2>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 12: LIVE BUILD (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section>
+        <section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #1a2a1a 0%, #0a0a0f 70%)">
+          <h2>Let's Build Something</h2>
+          <p style="font-size: 1.2em;" class="fragment fade-up">Right now.</p>
+          <p style="font-size: 1.2em;" class="fragment fade-up">One prompt.</p>
+          <p style="font-size: 1.2em;" class="fragment fade-up">
+            <span class="accent">Interactive hand-tracking energy visualizer.</span>
+          </p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Prompt</h2>
+          <div class="prompt-demo" style="font-size: 0.5em; line-height: 1.7;">
+            <p><span class="user">Human:</span> Single HTML file. Webcam hand-tracking visualizer using MediaPipe Hands. Dual canvas — bg for camera feed, fx for effects with trail persistence. Detect 21 hand landmarks, draw neon skeleton + glowing fingertip nodes. When 2 hands visible: thick neon beams between matching fingertips with 3-layer glow (outer, core color, white center). 4 modes: Antigravity (rainbow beams + cross-connections + geometric fills), Geometric Mesh (all-to-all connections + triangle fills), Lightning (blue branching electric arcs with forks), Minimal (clean lines + midpoint nodes). Pinch detection: thumb-to-fingertip distance threshold triggers expanding ring burst + sparkle rays. Controls: beam width, glow, trail, camera opacity, skeleton/node/pinch toggles, color themes (neon/electric/fire/matrix/vapor), lite mode for FPS. Keyboard: 1-4 modes, H hide UI, F fullscreen. Dark UI, start screen with gradient title.</p>
+          </div>
+          <p class="fragment fade-up dim">One prompt. ~550 lines of code. Let's see it.</p>
+        </section>
+
+        <section data-transition="fade">
+          <h2>The Short Version</h2>
+          <div class="prompt-demo" style="font-size: 0.65em; line-height: 1.8;">
+            <p><span class="user">Human:</span> Build a webcam hand-tracking art visualizer. MediaPipe Hands, dual canvas, neon rainbow beams between fingertips, 4 modes (antigravity, geometric mesh, blue lightning, minimal), pinch effects, color themes, performance toggles. Single HTML file, dark UI.</p>
+          </div>
+          <p class="fragment fade-up" style="font-size: 1.1em; margin-top: 1em;">
+            Same output. <span class="glow">42 words.</span>
+          </p>
+          <p class="fragment fade-up dim">The AI fills in the engineering. You provide the vision.</p>
+        </section>
+
+        <section data-transition="fade" data-background-gradient="radial-gradient(ellipse at center, #0a1a2a 0%, #0a0a0f 70%)">
+          <h2 style="font-size: 2.5em;">Live Demo</h2>
+          <p style="font-size: 1.5em; margin: 1em 0;">
+            <a href="webcam-energy.html" target="_blank" class="badge" style="font-size: 1em; padding: 0.4em 1em;">launch Energy Conductor →</a>
+          </p>
+          <p class="dim" style="margin-top: 1em;">Built by AI · ~550 lines · No human code written</p>
+          <p class="dim">Keys: 1-4 modes · H hide controls · F fullscreen</p>
+        </section>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 13: YOUR MOVE (horizontal) -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%)">
+        <h2 class="r-fit-text" style="max-width: 80%;">Your Move</h2>
+        <p class="fragment fade-up" style="font-size: 1.1em; margin-top: 1em;">
+          AI is not coming for your art.
+        </p>
+        <p class="fragment fade-up" style="font-size: 1.1em;">
+          It's coming for your <span class="warn">excuses</span>.
+        </p>
+        <p class="fragment fade-up" style="margin-top: 2em; font-size: 0.8em; color: #888;">
+          Gabe DeWitt &nbsp;·&nbsp;
+          <a href="https://dejaviewed.dev" target="_blank" style="color: #64b5f6;">dejaviewed.dev</a> &nbsp;·&nbsp;
+          <a href="https://1gabe.com" target="_blank" style="color: #64b5f6;">1gabe.com</a>
+        </p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="node_modules/reveal.js/dist/reveal.js"></script>
+  <script src="node_modules/reveal.js/dist/plugin/highlight.js"></script>
+  <script src="node_modules/reveal.js/dist/plugin/zoom.js"></script>
+  <script src="node_modules/reveal.js/dist/plugin/notes.js"></script>
+  <script src="node_modules/reveal.js/dist/plugin/search.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      controls: true,
+      progress: true,
+      center: true,
+      navigationMode: 'grid',
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920,
+      height: 1080,
+      margin: 0.08,
+      minScale: 0.2,
+      maxScale: 2.0,
+      plugins: [
+        RevealHighlight,
+        RevealZoom,
+        RevealNotes,
+        RevealSearch,
+      ]
+    });
+  </script>
+</body>
+</html>
