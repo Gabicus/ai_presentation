@@ -1,29 +1,32 @@
 # AI Art Class Presentation · primer
 
-Updated: 2026-04-27
+Updated: 2026-04-27 (afternoon)
 
 ## Current status
 
 Reveal.js 6.0.1 presentation for Fairmont State AI & Art class. **Due Monday April 28, 2026.**
 Runs locally: `python3 -m http.server 8080` from `ai_art_class/` dir.
-Pushed to GitHub: `git@github.com:Gabicus/ai_presentation.git` (main branch).
+Live online: `https://dejaviewed.dev/ai_presentation/`
+GitHub: `git@github.com:Gabicus/ai_presentation.git` (main branch).
+
+Reveal.js loads from `reveal-dist/` (committed) — works offline and online, no npm install needed.
 
 ## What changed (this session)
 
-- Deleted 3 slide groups: "Then AI Happened", "The Real Question", "The Takeaway"
+- Deleted slide groups: "Then AI Happened", "The Real Question", "The Takeaway"
 - Deleted "Career Intelligence System" and "Three.js Cosmos Hero" slides
 - Added devil's advocate section (foundation matters, Marcy Bridge, Skynet/Terminator, environmental cost/ManBearPig, blank page is gone)
 - Added citation tree slide to "Work I've Done with AI" section
-- Added standalone Three.js cosmos scene (`cosmos-standalone/index.html`) — vanilla, no React
+- Added standalone Three.js cosmos scene (`cosmos-standalone/index.html`)
 - Moved "Deeper Dives" and "Design Resources" into DejaViewed section
-- "My Creative Portfolio" moved to vertical sub-slide under final "What Will You Build?" slide
-- Cosmos graph slide URL corrected to `https://dejaviewed.dev/graph-cosmos`
-- Iframes for ASE and Cosmos use `data-src` for lazy loading (GPU was hitting 100%)
-- Fixed slide 0/1 images: global CSS `max-height: 55vh` was overriding, added `max-height: 95vh` inline
-- Fixed ASE Evolution grid: `grid-template-rows: 1fr 1fr`, `object-fit: cover`, `max-height: 72vh`
-- Fixed terminator image container: `flex: 0` → `flex: 1`
-- RAM cleanup: 13GB stale DuckDB temps from `/tmp`, 6GB chroma-mcp from swap
-- Git initialized, committed, pushed to GitHub
+- "My Creative Portfolio" → vertical sub-slide under final "What Will You Build?"
+- Cosmos graph slide URL → `https://dejaviewed.dev/graph-cosmos`
+- Iframes use `data-src` for lazy loading (GPU was 100%)
+- Intro slide images: 82vh (fit fullscreen with name text)
+- Fixed ASE Evolution grid, terminator image container
+- RAM cleanup: 13GB DuckDB temps from `/tmp`, 6GB chroma-mcp from swap
+- Switched reveal.js refs from `node_modules/` to `reveal-dist/` for portability
+- Deployed to dejaviewed.dev/ai_presentation via dejaviewed-plugin (had to fix *.png gitignore)
 
 ## Section structure (horizontal groups)
 
@@ -42,6 +45,7 @@ Pushed to GitHub: `git@github.com:Gabicus/ai_presentation.git` (main branch).
 ## Key files
 
 - `index.html` — main presentation (~950 lines)
+- `reveal-dist/` — committed reveal.js CSS/JS/plugins (no npm needed)
 - `cosmos-standalone/index.html` — standalone Three.js cosmos (942 lines)
 - `all-seeing-eye/` — Next.js static export of ASE
 - `webcam-energy.html` — hand-tracking visualizer for live demo
@@ -50,18 +54,17 @@ Pushed to GitHub: `git@github.com:Gabicus/ai_presentation.git` (main branch).
 
 ## Deploy notes
 
-- GitHub: `git@github.com:Gabicus/ai_presentation.git`
-- Cloudflare (dejaviewed.dev/ai_presentation): possible but needs reveal.js dist copied — index.html refs `node_modules/reveal.js/dist/`. Not set up yet.
-- After clone: `npm install` to get reveal.js
+- Online copy synced to `dejaviewed-plugin/site/ai_presentation/`
+- dejaviewed-plugin `.gitignore` has `*.png` — exception added for `site/ai_presentation/**/*.png`
+- Any future changes need syncing: copy updated files to dejaviewed-plugin, commit+push both repos
 
 ## Next up
 
-- Verify all slides in browser before Monday
-- Consider CDN for reveal.js if deploying to Cloudflare
-- Practice run-through with webcam demo
+- Practice run-through with webcam demo before Monday
+- Verify fullscreen looks good on projector resolution
 
 ## Don't forget
 
-- reveal.js 6.0.1 plugin paths: `dist/plugin/` not `plugin/`
 - Audience: mixed students + skeptical art faculty — tone matters
 - Webcam demo needs good lighting, two hands visible
+- Two repos to sync: ai_presentation (source) + dejaviewed-plugin (deploy)
