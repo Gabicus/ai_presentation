@@ -1,42 +1,67 @@
-# AI Art Class Presentation — Primer
+# AI Art Class Presentation · primer
 
-## Current Status
-Presentation is functional and serveable. Webcam energy conductor has 4 modes, 5 color themes, toggles, keyboard shortcuts. Slide editor built. All running at localhost:8082.
+Updated: 2026-04-27
 
-## What Changed (Session 2026-04-25)
-- Built full reveal.js 6.0.1 presentation (13 horizontal sections, vertical drill-downs)
-- Extracted images from BrownBag PowerPoint (benchmark chart, METR growth, AI-as-UI diagram)
-- Took 1920x1080 Playwright screenshots of DejaViewed, Graph Cosmos, portfolio
-- Built webcam-energy.html: MediaPipe hand tracking + Canvas 2D neon effects
-- Iterated on visualizer: removed palm beam + particles, added pinch effects, optimized batching
-- Made lightning mode blue/realistic with recursive branching forks
-- Added 5 color themes (neon/electric/fire/matrix/vapor)
-- Added toggle controls: skeleton, nodes, pinch FX, mirror cam, lite mode
-- Added keyboard shortcuts: 1-4 modes, H/F/S/N/P/L
-- Updated presentation Section 12 with actual prompt slides + short version (42 words)
-- Built editor.html — slide card editor that exports slides.json
-- Moved Kay's bird files to KayDubs/kaydubs-birds/
+## Current status
 
-## Next Up
-1. Victor test webcam-energy.html latest (lightning, themes, toggles)
-2. Victor review/edit slides in editor.html, save slides.json
-3. I compose slides.json into index.html if Victor changes content
-4. Find "All-Seeing Eye" project and integrate
-5. Integrate Websites project (Three.js cosmos hero)
-6. Content refinement pass based on Victor's feedback
-7. Deploy to 1gabe.com/demo/ if time
-8. Get wireless presenter/clicker for Monday
+Reveal.js 6.0.1 presentation for Fairmont State AI & Art class. **Due Monday April 28, 2026.**
+Runs locally: `python3 -m http.server 8080` from `ai_art_class/` dir.
+Pushed to GitHub: `git@github.com:Gabicus/ai_presentation.git` (main branch).
 
-## Blockers
-- None critical. Presentation is usable as-is.
+## What changed (this session)
 
-## Open Questions
-- "All-Seeing Eye" project — what folder?
-- Does Victor want webcam-visualizer.html (WebGL shaders) kept in the presentation too, or just energy conductor?
-- Deploy strategy for 1gabe.com?
+- Deleted 3 slide groups: "Then AI Happened", "The Real Question", "The Takeaway"
+- Deleted "Career Intelligence System" and "Three.js Cosmos Hero" slides
+- Added devil's advocate section (foundation matters, Marcy Bridge, Skynet/Terminator, environmental cost/ManBearPig, blank page is gone)
+- Added citation tree slide to "Work I've Done with AI" section
+- Added standalone Three.js cosmos scene (`cosmos-standalone/index.html`) — vanilla, no React
+- Moved "Deeper Dives" and "Design Resources" into DejaViewed section
+- "My Creative Portfolio" moved to vertical sub-slide under final "What Will You Build?" slide
+- Cosmos graph slide URL corrected to `https://dejaviewed.dev/graph-cosmos`
+- Iframes for ASE and Cosmos use `data-src` for lazy loading (GPU was hitting 100%)
+- Fixed slide 0/1 images: global CSS `max-height: 55vh` was overriding, added `max-height: 95vh` inline
+- Fixed ASE Evolution grid: `grid-template-rows: 1fr 1fr`, `object-fit: cover`, `max-height: 72vh`
+- Fixed terminator image container: `flex: 0` → `flex: 1`
+- RAM cleanup: 13GB stale DuckDB temps from `/tmp`, 6GB chroma-mcp from swap
+- Git initialized, committed, pushed to GitHub
 
-## Don't Forget
-- reveal.js 6.0.1 plugin paths are `dist/plugin/` not `plugin/` (v6 breaking change)
-- Dev server: `npx serve -l 8080` from ai_art_class/
-- Playwright MCP can connect to existing Chrome via CDP port 38117 for authenticated screenshots
-- Victor's audience is skeptical art faculty — tone matters
+## Section structure (horizontal groups)
+
+1. Title + Intro (name, PE, images)
+2. AI Today (what it can do)
+3. But We've Seen This Before (photography → 3D printing → AI, South Park meme)
+4. The Pattern (Photoshop 1990s, Digital Photography 2000s, 3D Printing 2010s, AI 2020s)
+5. What Changes (what AI adds to creative workflow)
+6. Work I've Done with AI (NETL portfolio, brownbag slides, citation tree)
+7. DejaViewed (site, deeper dives, design resources, cosmos graph)
+8. All-Seeing Eye (evolution grid, ASE live iframe, 3D Cosmos live iframe)
+9. Devil's Advocate (foundation matters, Marcy Bridge, Skynet, environmental cost, blank page gone)
+10. Live Build (prompt demo, webcam energy conductor)
+11. What Will You Build? + My Creative Portfolio (vertical sub-slides)
+
+## Key files
+
+- `index.html` — main presentation (~950 lines)
+- `cosmos-standalone/index.html` — standalone Three.js cosmos (942 lines)
+- `all-seeing-eye/` — Next.js static export of ASE
+- `webcam-energy.html` — hand-tracking visualizer for live demo
+- `editor.html` — slide authoring tool
+- `img/` — all presentation images
+
+## Deploy notes
+
+- GitHub: `git@github.com:Gabicus/ai_presentation.git`
+- Cloudflare (dejaviewed.dev/ai_presentation): possible but needs reveal.js dist copied — index.html refs `node_modules/reveal.js/dist/`. Not set up yet.
+- After clone: `npm install` to get reveal.js
+
+## Next up
+
+- Verify all slides in browser before Monday
+- Consider CDN for reveal.js if deploying to Cloudflare
+- Practice run-through with webcam demo
+
+## Don't forget
+
+- reveal.js 6.0.1 plugin paths: `dist/plugin/` not `plugin/`
+- Audience: mixed students + skeptical art faculty — tone matters
+- Webcam demo needs good lighting, two hands visible
