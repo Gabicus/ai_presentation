@@ -1,0 +1,46 @@
+Art I've done with AI
+
+I have 3 photos And I want them in a row for my Artist | Engineer | Mountaineer  section
+/home/victor/Desktop/Projects/KayDubs/ai_art_class/my_stuff/Gabe_Artist.png
+/home/victor/Desktop/Projects/KayDubs/ai_art_class/my_stuff/Gabe_Engineer.png
+/home/victor/Desktop/Projects/KayDubs/ai_art_class/my_stuff/Gabe_Mountaineer.png
+
+then a slid of my art photos after that (picture in same folder)
+
+# Art I have done with AI
+looks at my styleGAN work in my Keylogic portfolio folder about that for descrition I think there stuff in my career engine that is fascinating for that, but I have these image
+
+# this slide is the product of teaching my algorithic process to people, then taking those people's art into 30k iterations to train a styleGAN python nvidia tuned training on all these items for over a week at 100% gpu usuage for a week. The first iteration ran for 3days befor my power went out and killed the run.
+
+this
+/home/victor/Desktop/Projects/KayDubs/ai_art_class/my_stuff/dots.jpg
+taught this
+/home/victor/Desktop/Projects/KayDubs/ai_art_class/my_stuff/DD_Artsamples.png
+taught this
+https://www.wv-art.com/Art/AI/i-KfMJRpf this video showl be plaing and on loop
+
+This was interesting but I hadn't collected the data I need nor was the process what I thought I could utilize for what I'm actualyl trying to do on this project.
+
+#to have as videos
+https://www.wv-art.com/Art/Art-videos/i-nvj2sF6
+https://www.wv-art.com/Art/Art-videos/i-jhg9M9w
+https://www.wv-art.com/Art/Art-videos/i-PjXLHww
+i'd like to have the three of these playing side by side and looped.
+
+these slides are about the topical uses, but so what, they look pretty but what does it mean? It's cool for posts but serves no purpose
+
+
+Work I've done with AI
+Slides 8,9,10,11, 12 from my Brownbag AI presentaion need extracted and those images and text explanations etc added within the slide group talking about my work AI
+These are more about using the computational power to grow a project and use AI to assist in growing a projects data set an alaysis from a 2mb file analyszing powergeneration data over one year by month, to looking at the last 10 years by hour for the entire US gat turbine fleet.
+
+
+something broke with our chat and I cleared it hopefully that fixed the issue, here's what you were working on .
+On the second slide, add my name, Gabe DeWitt. PE, Image is bigger, please. And the seen this before group of slides, let's add
+   example for the nineteen nineties, an example for the February, example for February, and then we're at 2020 with AI. Give good examples, Also on the one of these add a Randy from South park meme "they took our jobs."
+
+Also, I'm not sure what you're doing with the all seeing eye. Examples evolution page, but you actually keep making it worse.
+  There's even less padding Take a screenshot if you need to.
+
+
+  I would like the Deeper dive and design rescources page at the end of the DejaViewed slides, as they are part of it.
